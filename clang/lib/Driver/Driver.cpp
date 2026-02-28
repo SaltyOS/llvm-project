@@ -46,6 +46,7 @@
 #include "ToolChains/SPIRV.h"
 #include "ToolChains/SPIRVOpenMP.h"
 #include "ToolChains/SYCL.h"
+#include "ToolChains/Besalt.h"
 #include "ToolChains/Solaris.h"
 #include "ToolChains/TCE.h"
 #include "ToolChains/UEFI.h"
@@ -7092,6 +7093,9 @@ const ToolChain &Driver::getToolChain(const ArgList &Args,
       break;
     case llvm::Triple::ChipStar:
       TC = std::make_unique<toolchains::HIPSPVToolChain>(*this, Target, Args);
+      break;
+    case llvm::Triple::Besalt:
+      TC = std::make_unique<toolchains::Besalt>(*this, Target, Args);
       break;
     default:
       // Of these targets, Hexagon is the only one that might have
