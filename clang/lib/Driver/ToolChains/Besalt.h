@@ -52,6 +52,9 @@ public:
   RuntimeLibType GetDefaultRuntimeLibType() const override {
     return ToolChain::RLT_CompilerRT;
   }
+  CXXStdlibType GetDefaultCXXStdlibType() const override {
+    return ToolChain::CST_Libcxx;
+  }
 
   std::string getDynamicLinker(const llvm::opt::ArgList &Args) const override {
     return "/lib/ld-besalt.so";
