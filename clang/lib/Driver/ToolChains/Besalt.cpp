@@ -122,11 +122,7 @@ void besalt::Linker::ConstructJob(Compilation &C, const JobAction &JA,
 Besalt::Besalt(const Driver &D, const llvm::Triple &Triple,
                  const ArgList &Args)
     : Generic_ELF(D, Triple, Args) {
-  if (!D.SysRoot.empty()) {
-    SmallString<128> P(D.SysRoot);
-    llvm::sys::path::append(P, "usr", "lib");
-    getFilePaths().push_back(std::string(P));
-  }
+  getFilePaths().push_back(D.SysRoot + "/usr/lib");
 }
 
 Tool *Besalt::buildLinker() const {
@@ -149,9 +145,5 @@ void Besalt::AddClangSystemIncludeArgs(const ArgList &DriverArgs,
   if (DriverArgs.hasArg(options::OPT_nostdlibinc))
     return;
 
-  if (!D.SysRoot.empty()) {
-    SmallString<128> P(D.SysRoot);
-    llvm::sys::path::append(P, "usr", "include");
-    addExternCSystemInclude(DriverArgs, CC1Args, P.str());
-  }
+  addExternCSystemInclude(DriverArgs, CC1Args, D.SysRoot + "/usr/include");
 }
