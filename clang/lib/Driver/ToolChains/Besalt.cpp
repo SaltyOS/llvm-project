@@ -97,8 +97,6 @@ void besalt::Linker::ConstructJob(Compilation &C, const JobAction &JA,
       CmdArgs.push_back("-lc");
       CmdArgs.push_back("-lbesalt");
     }
-    CmdArgs.push_back(Args.MakeArgString(TC.GetFilePath("core.o")));
-    CmdArgs.push_back(Args.MakeArgString(TC.GetFilePath("compiler_builtins.o")));
     AddRunTimeLibs(TC, D, CmdArgs, Args);
   }
 
