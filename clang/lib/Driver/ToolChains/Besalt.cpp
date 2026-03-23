@@ -51,6 +51,12 @@ void besalt::Linker::ConstructJob(Compilation &C, const JobAction &JA,
   // Build ID
   CmdArgs.push_back("--build-id");
 
+  // Linker emulation: selects output format based on target architecture
+  if (const char *LDMOption = tools::getLDMOption(TC.getTriple(), Args)) {
+    CmdArgs.push_back("-m");
+    CmdArgs.push_back(LDMOption);
+  }
+
   if (IsStatic) {
     CmdArgs.push_back("-static");
   } else {
