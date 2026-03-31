@@ -250,6 +250,7 @@ public:
     ShaderModel, // DirectX ShaderModel
     LiteOS,
     Serenity,
+    SaltyOS,
     Vulkan, // Vulkan SPIR-V
     CheriotRTOS,
     OpenCL,
@@ -798,6 +799,10 @@ public:
 
   /// Tests whether the OS is QURT.
   bool isOSQurt() const { return getOS() == Triple::QURT; }
+
+  bool isOSSaltyOS() const {
+    return getOS() == Triple::SaltyOS;
+  }
 
   /// Tests whether the OS uses the ELF binary format.
   bool isOSBinFormatELF() const {
