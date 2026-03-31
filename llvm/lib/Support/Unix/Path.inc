@@ -130,7 +130,7 @@ const file_t kInvalidFile = -1;
     defined(__CYGWIN__) || defined(__DragonFly__) || defined(_AIX) ||          \
     defined(__GNU__) ||                                                        \
     (defined(__sun__) && defined(__svr4__) || defined(__HAIKU__)) ||           \
-    defined(__managarm__)
+    defined(__managarm__) || defined(__SaltyOS__)
 static int test_dir(char ret[PATH_MAX], const char *dir, const char *bin) {
   struct stat sb;
   char fullpath[PATH_MAX];
@@ -254,7 +254,7 @@ std::string getMainExecutable(const char *argv0, void *MainAddr) {
   if (getprogpath(exe_path, argv0) != NULL)
     return exe_path;
 #elif defined(__linux__) || defined(__CYGWIN__) || defined(__gnu_hurd__) ||    \
-    defined(__managarm__)
+    defined(__managarm__) || defined(__SaltyOS__)
   char exe_path[PATH_MAX];
   const char *aPath = "/proc/self/exe";
   if (sys::fs::exists(aPath)) {
