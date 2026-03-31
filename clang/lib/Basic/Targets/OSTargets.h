@@ -662,6 +662,30 @@ public:
   }
 };
 
+// SaltyOS target
+template <typename Target>
+class LLVM_LIBRARY_VISIBILITY SaltyOSTargetInfo : public OSTargetInfo<Target> {
+protected:
+  void getOSDefines(const LangOptions &Opts, const llvm::Triple &Triple,
+                    MacroBuilder &Builder) const override {
+    Builder.defineMacro("__SaltyOS__");
+    Builder.defineMacro("__ELF__");
+  }
+
+public:
+  SaltyOSTargetInfo(const llvm::Triple &Triple, const TargetOptions &Opts)
+      : OSTargetInfo<Target>(Triple, Opts) {
+    switch (Triple.getArch()) {
+    default:
+      break;
+    case llvm::Triple::x86_64:
+      this->WIntType = TargetInfo::UnsignedInt;
+      this->HasFloat128 = true;
+      break;
+    }
+  }
+};
+
 // Solaris target
 template <typename Target>
 class LLVM_LIBRARY_VISIBILITY SolarisTargetInfo : public OSTargetInfo<Target> {

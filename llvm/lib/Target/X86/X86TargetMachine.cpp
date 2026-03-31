@@ -145,6 +145,9 @@ static Reloc::Model getEffectiveRelocModel(const Triple &TT, bool JIT,
     }
     if (TT.isOSWindows() && is64Bit)
       return Reloc::PIC_;
+    // SaltyOS ELF targets default to PIC.
+    if (TT.isOSSaltyOS())
+      return Reloc::PIC_;
     return Reloc::Static;
   }
 
