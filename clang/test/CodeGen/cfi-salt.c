@@ -76,9 +76,9 @@ int __call(fn_t f) {
 // CHECK-LABEL: @call
 // CHECK:         call{{.*}} i32 %{{.}}(){{.*}} [ "kcfi"(i32 [[#LOW_SODIUM_HASH]]) ]
 // CHECK-LABEL: @call_salt
-// CHECK:         call{{.*}} i32 %{{.}}(){{.*}} [ "kcfi"(i32 [[#%d,SALTY_HASH:]]) ]
+// CHECK:         call{{.*}} i32 %{{.}}(){{.*}} [ "kcfi"(i32 [[#%d,BESALT_HASH:]]) ]
 // CHECK-LABEL: @call_salt_ty
-// CHECK:         call{{.*}} i32 %{{.}}(){{.*}} [ "kcfi"(i32 [[#SALTY_HASH]]) ]
+// CHECK:         call{{.*}} i32 %{{.}}(){{.*}} [ "kcfi"(i32 [[#BESALT_HASH]]) ]
 int call(fn_t f) { return f(); }
 int call_salt(fn_t __cfi_salt f) { return f(); }
 int call_salt_ty(fn_salt_t f) { return f(); }
@@ -87,9 +87,9 @@ int call_salt_empty_ty(fn_salt_empty_t f) { return f(); }
 // CHECK-LABEL: @ucall
 // CHECK:         call{{.*}} i32 %{{.}}(){{.*}} [ "kcfi"(i32 [[#%d,LOW_SODIUM_UHASH:]]) ]
 // CHECK-LABEL: @ucall_salt
-// CHECK:         call{{.*}} i32 %{{.}}(){{.*}} [ "kcfi"(i32 [[#%d,SALTY_UHASH:]]) ]
+// CHECK:         call{{.*}} i32 %{{.}}(){{.*}} [ "kcfi"(i32 [[#%d,BESALT_UHASH:]]) ]
 // CHECK-LABEL: @ucall_salt_ty
-// CHECK:         call{{.*}} i32 %{{.}}(){{.*}} [ "kcfi"(i32 [[#SALTY_UHASH]]) ]
+// CHECK:         call{{.*}} i32 %{{.}}(){{.*}} [ "kcfi"(i32 [[#BESALT_UHASH]]) ]
 unsigned int ucall(ufn_t f) { return f(); }
 unsigned int ucall_salt(ufn_t __cfi_salt f) { return f(); }
 unsigned int ucall_salt_ty(ufn_salt_t f) { return f(); }
@@ -130,26 +130,26 @@ int test1(struct cfi_struct *ptr) {
 // CHECK-LABEL: define dso_local{{.*}} i32 @f1(){{.*}} !kcfi_type
 // CHECK-SAME:  ![[#LOW_SODIUM_TYPE:]]
 // CHECK-LABEL: define dso_local{{.*}} i32 @f1_salt(){{.*}} !kcfi_type
-// CHECK-SAME:  ![[#SALTY_TYPE:]]
+// CHECK-SAME:  ![[#BESALT_TYPE:]]
 int f1(void) { return 0; }
 int f1_salt(void) __cfi_salt { return 0; }
 
 // CHECK-LABEL: define dso_local{{.*}} i32 @f2(){{.*}} !kcfi_type
 // CHECK-SAME:  ![[#LOW_SODIUM_UTYPE:]]
 // CHECK: define dso_local{{.*}} i32 @f2_salt(){{.*}} !kcfi_type
-// CHECK-SAME:  ![[#SALTY_UTYPE:]]
+// CHECK-SAME:  ![[#BESALT_UTYPE:]]
 unsigned int f2(void) { return 2; }
 unsigned int f2_salt(void) __cfi_salt { return 2; }
 
 // CHECK-LABEL: define internal{{.*}} i32 @f3(){{.*}} !kcfi_type
 // CHECK-SAME:  ![[#LOW_SODIUM_TYPE]]
 // CHECK-LABEL: define internal{{.*}} i32 @f3_salt(){{.*}} !kcfi_type
-// CHECK-SAME:  ![[#SALTY_TYPE]]
+// CHECK-SAME:  ![[#BESALT_TYPE]]
 static int f3(void) { return 1; }
 static int f3_salt(void) __cfi_salt { return 1; }
 
 // CHECK: declare !kcfi_type ![[#LOW_SODIUM_TYPE]]{{.*}} i32 @[[F4]]()
-// CHECK: declare !kcfi_type ![[#SALTY_TYPE]]{{.*}} i32 @[[F4_SALT]]()
+// CHECK: declare !kcfi_type ![[#BESALT_TYPE]]{{.*}} i32 @[[F4_SALT]]()
 
 /// Must not emit !kcfi_type for non-address-taken local functions
 // CHECK-LABEL: define internal{{.*}} i32 @f5()
@@ -162,12 +162,12 @@ static int f5(void) { return 2; }
 static int f5_salt(void) __cfi_salt { return 2; }
 
 // CHECK: declare !kcfi_type ![[#LOW_SODIUM_TYPE]]{{.*}} i32 @f6()
-// CHECK: declare !kcfi_type ![[#SALTY_TYPE]]{{.*}} i32 @f6_salt()
+// CHECK: declare !kcfi_type ![[#BESALT_TYPE]]{{.*}} i32 @f6_salt()
 
 // CHECK-LABEL: @f7_salt
-// CHECK:         call{{.*}} i32 %{{.*}}() [ "kcfi"(i32 [[#SALTY_HASH]]) ]
+// CHECK:         call{{.*}} i32 %{{.*}}() [ "kcfi"(i32 [[#BESALT_HASH]]) ]
 // CHECK-LABEL: @f7_typedef_salt
-// CHECK:         call{{.*}} i32 %{{.*}}() [ "kcfi"(i32 [[#SALTY_HASH]]) ]
+// CHECK:         call{{.*}} i32 %{{.*}}() [ "kcfi"(i32 [[#BESALT_HASH]]) ]
 int f7_salt(struct cfi_struct *ptr) { return ptr->fptr(); }
 int f7_typedef_salt(struct cfi_struct *ptr) { return ptr->td_fptr(); }
 
@@ -182,7 +182,7 @@ int f8_salt_empty(void) __cfi_salt_empty { return 0; }
 // OFFSET: ![[#]] = !{i32 4, !"kcfi-offset", i32 3}
 //
 // CHECK:  ![[#LOW_SODIUM_TYPE]] = !{i32 [[#LOW_SODIUM_HASH]]}
-// CHECK:  ![[#SALTY_TYPE]] = !{i32 [[#SALTY_HASH]]}
+// CHECK:  ![[#BESALT_TYPE]] = !{i32 [[#BESALT_HASH]]}
 //
 // CHECK:  ![[#LOW_SODIUM_UTYPE]] = !{i32 [[#LOW_SODIUM_UHASH]]}
-// CHECK:  ![[#SALTY_UTYPE]] = !{i32 [[#SALTY_UHASH]]}
+// CHECK:  ![[#BESALT_UTYPE]] = !{i32 [[#BESALT_UHASH]]}
