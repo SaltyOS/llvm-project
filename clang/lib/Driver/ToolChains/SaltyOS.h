@@ -57,7 +57,7 @@ public:
   }
 
   std::string getDynamicLinker(const llvm::opt::ArgList &Args) const override {
-    return "/lib/ld-trona.so";
+    return "/lib/ldtrona-elf.so";
   }
 
   unsigned GetDefaultDwarfVersion() const override { return 5; }
